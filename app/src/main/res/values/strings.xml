@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Score Statistics</string>
+    <string name="label_add_team">Add Team</string>
+    <string name="label_add_score">Add Score</string>
+    <string name="label_name_team">Team name</string>
+    <string name="label_save">Save</string>
+    <string name="label_reset_stat">Reset Statistics</string>
+    <string name="label_show_stat">Show Statistics</string>
+    <string name="label_default_score_value">0</string>
+    <string name="warning_empty_list">The list is empty!</string>
+    <string name="warning_invalid_team_name">Invalid team name!</string>
+</resources>

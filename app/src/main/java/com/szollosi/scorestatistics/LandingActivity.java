@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,10 +19,13 @@ import com.szollosi.scorestatistics.data.DataManaging;
 import com.szollosi.scorestatistics.data.SharedPreferenceDataManager;
 import com.szollosi.scorestatistics.view.CustomSpinner;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
 
 public class LandingActivity extends AppCompatActivity {
+
+  private static final String EMPTY_LIST_ITEM = "-";
+
+  private static final String TAG = LandingActivity.class.getName();
 
   private DataManaging dataManaging;
 
@@ -54,7 +58,8 @@ public class LandingActivity extends AppCompatActivity {
     editTextTeamA = dialog.findViewById(R.id.editTextTeamA);
     editTextTeamB = dialog.findViewById(R.id.editTextTeamB);
 
-    Set<String> teamsSet = dataManaging.getTeams();
+    ArrayList<String> teamsSet = new ArrayList<>(dataManaging.getTeams());
+    teamsSet.add(0, EMPTY_LIST_ITEM);
     String[] teams = teamsSet.toArray(new String[teamsSet.size()]);
     if (teams.length == 0) {
       Toast.makeText(LandingActivity.this, R.string.warning_empty_list, Toast.LENGTH_LONG).show();
@@ -63,19 +68,38 @@ public class LandingActivity extends AppCompatActivity {
     ArrayAdapter<String> spinnerTeamAdaptor =
         new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, teams);
     spinnerTeamA.setAdapter(spinnerTeamAdaptor);
-    spinnerTeamB.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
+    spinnerTeamA.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
       @Override
       public void onSpinnerClosed(Spinner spinner) {
-        Toast.makeText(LandingActivity.this, "closed", Toast.LENGTH_SHORT).show();
+
       }
 
       @Override
       public void onSpinnerOpened(Spinner spinner) {
-        Toast.makeText(LandingActivity.this, "opened", Toast.LENGTH_SHORT).show();
-        Set<String> set = new TreeSet<>(teamsSet);
-        set.remove(spinnerTeamA.getSelectedItem());
+        ArrayList<String> set = new ArrayList<>(teamsSet);
+        String selectedItem = String.valueOf(spinnerTeamB.getSelectedItem());
+        if (!selectedItem.equals(EMPTY_LIST_ITEM)) {
+          set.remove(selectedItem);
+        }
         String[] teams = set.toArray(new String[set.size()]);
-        spinnerTeamB
+        spinner
+            .setAdapter(new ArrayAdapter<>(LandingActivity.this, android.R.layout.simple_spinner_dropdown_item, teams));
+      }
+    });
+    spinnerTeamB.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
+      @Override
+      public void onSpinnerClosed(Spinner spinner) {
+      }
+
+      @Override
+      public void onSpinnerOpened(Spinner spinner) {
+        ArrayList<String> set = new ArrayList<>(teamsSet);
+        String selectedItem = String.valueOf(spinnerTeamA.getSelectedItem());
+        if (!selectedItem.equals(EMPTY_LIST_ITEM)) {
+          set.remove(selectedItem);
+        }
+        String[] teams = set.toArray(new String[set.size()]);
+        spinner
             .setAdapter(new ArrayAdapter<>(LandingActivity.this, android.R.layout.simple_spinner_dropdown_item, teams));
       }
     });
@@ -95,7 +119,7 @@ public class LandingActivity extends AppCompatActivity {
     alertDialog.setPositiveButton(R.string.label_save, (dialog, which) -> {
       final String teamName = input.getText().toString();
       if (isValidTeamName(teamName)) {
-        dataManaging.saveTeamName(teamName);
+        Log.i(TAG, "addTeam: " + dataManaging.saveTeamName(teamName));
         dialog.dismiss();
       } else {
         Toast.makeText(LandingActivity.this, R.string.warning_invalid_team_name, Toast.LENGTH_LONG).show();
@@ -117,7 +141,7 @@ public class LandingActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_landing);
-    dataManaging = new SharedPreferenceDataManager(getApplicationContext());
+    dataManaging = new SharedPreferenceDataManager(this);
   }
 
   /**

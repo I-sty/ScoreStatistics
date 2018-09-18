@@ -1,6 +1,7 @@
 package com.szollosi.scorestatistics.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -24,5 +25,11 @@ public class ObjectBoxDataManager implements DataManaging {
   @Override
   public boolean saveTeamName(@NonNull String teamName) {
     return false;
+  }
+
+  @Nullable
+  @Override
+  public Score getScoreByTeam(@NonNull String teamName) {
+    return null;
   }
 }

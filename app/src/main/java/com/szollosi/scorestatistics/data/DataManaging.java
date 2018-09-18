@@ -1,6 +1,7 @@
 package com.szollosi.scorestatistics.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.Set;
 
@@ -35,4 +36,7 @@ public interface DataManaging {
    * @return true if the name is saved, false in case of any errors during the saving operation
    */
   boolean saveTeamName(@NonNull String teamName);
+
+  @Nullable
+  Score getScoreByTeam(@NonNull String teamName);
 }

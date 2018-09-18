@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,9 +30,20 @@ public class SharedPreferenceDataManager implements DataManaging {
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
   }
 
+  @Nullable
+  @Override
+  public Score getScoreByTeam(@NonNull String teamName) {
+    if (TextUtils.isEmpty(teamName)) {
+      return null;
+    }
+    return new Score(sharedPreferences.getInt(teamName + KEY_PLAYED_MATCHES, 0),
+        sharedPreferences.getInt(teamName + KEY_WINS, 0), sharedPreferences.getInt(teamName + KEY_SG, 0),
+        sharedPreferences.getInt(teamName + KEY_CG, 0), teamName);
+  }
+
   @Override
   public Set<String> getTeams() {
-    return sharedPreferences.getStringSet(KEY_TEAMS, new HashSet<>());
+    return new TreeSet<>(sharedPreferences.getStringSet(KEY_TEAMS, new TreeSet<>()));
   }
 
   @Override
@@ -54,7 +66,7 @@ public class SharedPreferenceDataManager implements DataManaging {
 
   @Override
   public boolean saveTeamName(@NonNull String teamName) {
-    TreeSet<String> teams = (TreeSet<String>) getTeams();
+    Set<String> teams = getTeams();
     boolean result;
     try {
       result = teams.add(teamName);
@@ -79,19 +91,19 @@ public class SharedPreferenceDataManager implements DataManaging {
     editor.putInt(keyB, playedMatches + 1);
   }
 
-  private void updateScores(SharedPreferences.Editor editor, String teamA, String teamB, int scoreFirst,
-      int scoreSecond) {
+  private void updateScores(SharedPreferences.Editor editor, String teamA, String teamB, int scoreGoalsTeamA,
+      int scoreGoalsTeamB) {
     int scoredGoalsTeamA = sharedPreferences.getInt(teamA + KEY_SG, 0);
-    editor.putInt(teamA + KEY_SG, scoredGoalsTeamA + scoreFirst);
+    editor.putInt(teamA + KEY_SG, scoredGoalsTeamA + scoreGoalsTeamA);
 
     int concededGoalsTeamA = sharedPreferences.getInt(teamA + KEY_CG, 0);
-    editor.putInt(teamA + KEY_CG, concededGoalsTeamA + scoreSecond);
+    editor.putInt(teamA + KEY_CG, concededGoalsTeamA + scoreGoalsTeamB);
 
     int scoredGoalsTeamB = sharedPreferences.getInt(teamB + KEY_SG, 0);
-    editor.putInt(teamA + KEY_SG, scoredGoalsTeamB + scoreSecond);
+    editor.putInt(teamB + KEY_SG, scoredGoalsTeamB + scoreGoalsTeamB);
 
     int concededGoalsTeamB = sharedPreferences.getInt(teamB + KEY_CG, 0);
-    editor.putInt(teamA + KEY_CG, concededGoalsTeamB + scoreFirst);
+    editor.putInt(teamB + KEY_CG, concededGoalsTeamB + scoreGoalsTeamA);
   }
 
   private void updateWins(SharedPreferences.Editor editor, String winner) {

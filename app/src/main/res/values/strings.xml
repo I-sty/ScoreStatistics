@@ -9,4 +9,8 @@
     <string name="label_default_score_value">0</string>
     <string name="warning_empty_list">The list is empty!</string>
     <string name="warning_invalid_team_name">Invalid team name!</string>
+    <string name="label_score_table">Score Table</string>
+    <string name="label_statistics">Statistics</string>
+    <string name="label_sort_by">Sort by:</string>
+    <string name="not_available">N/A</string>
 </resources>

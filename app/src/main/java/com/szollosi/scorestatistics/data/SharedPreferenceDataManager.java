@@ -11,6 +11,9 @@ import android.util.Log;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Implementation of the data managing interface
+ */
 public class SharedPreferenceDataManager implements DataManaging {
   private static final String KEY_CG = "_CG";
 
@@ -41,8 +44,7 @@ public class SharedPreferenceDataManager implements DataManaging {
     if (TextUtils.isEmpty(teamName)) {
       return null;
     }
-    return new Score(sharedPreferences.getInt(teamName + KEY_PLAYED_MATCHES, 0),
-        sharedPreferences.getInt(teamName + KEY_WINS, 0), sharedPreferences.getInt(teamName + KEY_SG, 0),
+    return new Score(sharedPreferences.getInt(teamName + KEY_PLAYED_MATCHES, 0), sharedPreferences.getInt(teamName + KEY_WINS, 0), sharedPreferences.getInt(teamName + KEY_SG, 0),
         sharedPreferences.getInt(teamName + KEY_CG, 0), teamName);
   }
 
@@ -123,7 +125,8 @@ public class SharedPreferenceDataManager implements DataManaging {
    * @param scoreGoalsTeamA Number of scored goals of the first team
    * @param scoreGoalsTeamB Number of scored goals of the second team
    */
-  private void updateScores(SharedPreferences.Editor editor, String teamA, String teamB, int scoreGoalsTeamA, int scoreGoalsTeamB) {
+  private void updateScores(SharedPreferences.Editor editor, String teamA, String teamB, int scoreGoalsTeamA,
+      int scoreGoalsTeamB) {
     int scoredGoalsTeamA = sharedPreferences.getInt(teamA + KEY_SG, 0);
     editor.putInt(teamA + KEY_SG, scoredGoalsTeamA + scoreGoalsTeamA);
 

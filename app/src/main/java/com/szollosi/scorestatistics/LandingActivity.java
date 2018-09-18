@@ -21,6 +21,9 @@ import com.szollosi.scorestatistics.view.OCSpinner;
 
 import java.util.ArrayList;
 
+/**
+ * The entry point of the application
+ */
 public class LandingActivity extends AppCompatActivity {
 
   private static final String EMPTY_LIST_ITEM = "-";
@@ -46,7 +49,7 @@ public class LandingActivity extends AppCompatActivity {
   /**
    * Opens a new dialog to add a new score
    *
-   * @param view
+   * @param view The clicked view
    */
   public void addScore(View view) {
     AlertDialog.Builder alertDialog = new AlertDialog.Builder(LandingActivity.this);
@@ -76,8 +79,7 @@ public class LandingActivity extends AppCompatActivity {
       Toast.makeText(LandingActivity.this, R.string.warning_empty_list, Toast.LENGTH_LONG).show();
       return;
     }
-    ArrayAdapter<String> spinnerTeamAdaptor =
-        new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, teams);
+    ArrayAdapter<String> spinnerTeamAdaptor = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, teams);
     spinnerTeamA.setAdapter(spinnerTeamAdaptor);
     spinnerTeamA.setSpinnerEventsListener(new OCSpinner.OnSpinnerEventsListener() {
       @Override
@@ -125,8 +127,7 @@ public class LandingActivity extends AppCompatActivity {
     input.setSingleLine();
     input.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
     input.setKeyListener(DigitsKeyListener.getInstance("qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM "));
-    LinearLayout.LayoutParams lp =
-        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     input.setLayoutParams(lp);
     alertDialog.setView(input);
     alertDialog.setTitle(R.string.label_name_team);

@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * The second screen of the application. Here you can find the score and statistic tables.
+ */
 public class StatisticsActivity extends AppCompatActivity {
 
   private static final TableRow.LayoutParams LAYOUT_ROW =

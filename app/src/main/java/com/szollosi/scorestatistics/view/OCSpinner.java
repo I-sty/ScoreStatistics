@@ -15,11 +15,15 @@ public class OCSpinner extends android.support.v7.widget.AppCompatSpinner {
 
     /**
      * Callback triggered when the spinner was closed.
+     *
+     * @param spinner The spinner that was triggered
      */
     void onSpinnerClosed(Spinner spinner);
 
     /**
      * Callback triggered when the spinner was opened.
+     *
+     * @param spinner The spinner that was triggered
      */
     void onSpinnerOpened(Spinner spinner);
 

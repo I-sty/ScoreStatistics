@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-    <com.szollosi.scorestatistics.view.CustomSpinner
+    <com.szollosi.scorestatistics.view.OCSpinner
         android:id="@+id/spinnerTeamB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView2"/>
-    <com.szollosi.scorestatistics.view.CustomSpinner
+    <com.szollosi.scorestatistics.view.OCSpinner
         android:id="@+id/spinnerTeamA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

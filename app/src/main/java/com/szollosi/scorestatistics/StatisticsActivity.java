@@ -60,7 +60,7 @@ public class StatisticsActivity extends AppCompatActivity {
     statHeaders = getResources().getStringArray(R.array.array_statistics);
 
     generateScoreTable(scoreTable);
-    generateStatisticTable(statTable);
+    generateStatisticTable();
     Spinner spinnerOrder = findViewById(R.id.spinnerOrder);
     spinnerOrder.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
@@ -77,20 +77,27 @@ public class StatisticsActivity extends AppCompatActivity {
     });
   }
 
+  /**
+   * Clears the 'Statistic-table'
+   */
   private void clearStatisticTable() {
     while (statTable.getChildCount() > 1) {
       statTable.removeViewAt(1);
     }
   }
 
+  /**
+   * Generates the score table.
+   *
+   * @param scoreTable The 'Score-table' view to fill
+   */
   private void generateScoreTable(TableLayout scoreTable) {
+    // make the header row
     TableRow headerRow = new TableRow(this);
     TextView child = new TextView(this);
     child.setText(R.string.label_name_team);
     child.setPadding(30, 5, 30, 5);
     headerRow.addView(child, LAYOUT_ROW);
-
-    // make the header row
     for (String team : teams) {
       TextView textView = new TextView(this);
       textView.setText(team);
@@ -99,6 +106,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
     scoreTable.addView(headerRow, LAYOUT_TABLE);
 
+    // generate matrix
     generateScoredMatrix(teams.length);
 
     // make the content of the table
@@ -126,6 +134,11 @@ public class StatisticsActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * Generates a matrix for the 'Scored-table'. The matrix is filled with random numbers.
+   *
+   * @param length The number of the teams
+   */
   private void generateScoredMatrix(final int length) {
     scoredMatrix = new int[length][length];
     for (int i = 0; i < length; ++i) {
@@ -137,6 +150,12 @@ public class StatisticsActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * Generates a row for the 'Statistic-table'
+   *
+   * @param row The row object to put new views into this
+   * @param content The content to put in the text view
+   */
   private void generateStatRow(TableRow row, Object content) {
     TextView child = new TextView(this);
     child.setText(String.valueOf(content));
@@ -146,7 +165,11 @@ public class StatisticsActivity extends AppCompatActivity {
     row.addView(child, LAYOUT_ROW);
   }
 
-  private void generateStatisticTable(TableLayout statTable) {
+  /**
+   * Generates an empty 'Statistic-table'. Only the header row is put, the content will be put later.
+   */
+  private void generateStatisticTable() {
+    // make the header row
     TableRow headerRow = new TableRow(this);
     headerRow.addView(new TextView(this), LAYOUT_ROW);
 
@@ -159,6 +182,11 @@ public class StatisticsActivity extends AppCompatActivity {
     statTable.addView(headerRow, LAYOUT_TABLE);
   }
 
+  /**
+   * Generates the content of the 'Statistic-table'
+   *
+   * @param order The criteria of the order
+   */
   private void generateStatisticTableContent(Order order) {
     clearStatisticTable();
     for (Score score : getScoresByOrder(order)) {

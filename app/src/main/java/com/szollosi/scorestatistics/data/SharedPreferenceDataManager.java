@@ -26,6 +26,11 @@ public class SharedPreferenceDataManager implements DataManaging {
 
   private final SharedPreferences sharedPreferences;
 
+  /**
+   * Constructor
+   *
+   * @param context The context of the preferences whose values are wanted.
+   */
   public SharedPreferenceDataManager(@NonNull Context context) {
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
   }
@@ -57,9 +62,9 @@ public class SharedPreferenceDataManager implements DataManaging {
     increasePlayedMatches(editor, teamA, teamB);
     updateScores(editor, teamA, teamB, scoreA, scoreB);
     if (scoreA > scoreB) {
-      updateWins(editor, teamA);
+      increaseWins(editor, teamA);
     } else if (scoreA < scoreB) {
-      updateWins(editor, teamB);
+      increaseWins(editor, teamB);
     }
     editor.apply();
   }
@@ -81,6 +86,13 @@ public class SharedPreferenceDataManager implements DataManaging {
     return result;
   }
 
+  /**
+   * Increases the number of played matches for the given two teams.
+   *
+   * @param editor The editor of the Shared Preference.
+   * @param teamA The first team
+   * @param teamB The second team
+   */
   private void increasePlayedMatches(SharedPreferences.Editor editor, String teamA, String teamB) {
     String keyA = teamA + KEY_PLAYED_MATCHES;
     int playedMatches = sharedPreferences.getInt(keyA, 0);
@@ -91,8 +103,27 @@ public class SharedPreferenceDataManager implements DataManaging {
     editor.putInt(keyB, playedMatches + 1);
   }
 
-  private void updateScores(SharedPreferences.Editor editor, String teamA, String teamB, int scoreGoalsTeamA,
-      int scoreGoalsTeamB) {
+  /**
+   * Increases the number of wins for winner team.
+   *
+   * @param editor The editor of the Shared Preference.
+   * @param winner Winner team
+   */
+  private void increaseWins(SharedPreferences.Editor editor, String winner) {
+    int victories = sharedPreferences.getInt(winner + KEY_WINS, 0);
+    editor.putInt(winner + KEY_WINS, victories + 1);
+  }
+
+  /**
+   * Updates the score data for the given two teams.
+   *
+   * @param editor The editor of the Shared Preference.
+   * @param teamA The first team
+   * @param teamB The second team
+   * @param scoreGoalsTeamA Number of scored goals of the first team
+   * @param scoreGoalsTeamB Number of scored goals of the second team
+   */
+  private void updateScores(SharedPreferences.Editor editor, String teamA, String teamB, int scoreGoalsTeamA, int scoreGoalsTeamB) {
     int scoredGoalsTeamA = sharedPreferences.getInt(teamA + KEY_SG, 0);
     editor.putInt(teamA + KEY_SG, scoredGoalsTeamA + scoreGoalsTeamA);
 
@@ -104,10 +135,5 @@ public class SharedPreferenceDataManager implements DataManaging {
 
     int concededGoalsTeamB = sharedPreferences.getInt(teamB + KEY_CG, 0);
     editor.putInt(teamB + KEY_CG, concededGoalsTeamB + scoreGoalsTeamA);
-  }
-
-  private void updateWins(SharedPreferences.Editor editor, String winner) {
-    int victories = sharedPreferences.getInt(winner + KEY_WINS, 0);
-    editor.putInt(winner + KEY_WINS, victories + 1);
   }
 }

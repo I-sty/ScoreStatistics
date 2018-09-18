@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.szollosi.scorestatistics.data.DataManaging;
 import com.szollosi.scorestatistics.data.SharedPreferenceDataManager;
-import com.szollosi.scorestatistics.view.CustomSpinner;
+import com.szollosi.scorestatistics.view.OCSpinner;
 
 import java.util.ArrayList;
 
@@ -25,18 +25,29 @@ public class LandingActivity extends AppCompatActivity {
 
   private static final String EMPTY_LIST_ITEM = "-";
 
+  /** Log tag */
   private static final String TAG = LandingActivity.class.getName();
 
+  /** Data manager */
   private DataManaging dataManaging;
 
+  /** The first EditText (for the score of the team) from the 'add-score-dialog' */
   private EditText editTextTeamA;
 
+  /** The second EditText (for the score of the team) from the 'add-score-dialog' */
   private EditText editTextTeamB;
 
-  private CustomSpinner spinnerTeamA;
+  /** The first dropdown from the 'add-score-dialog' */
+  private OCSpinner spinnerTeamA;
 
-  private CustomSpinner spinnerTeamB;
+  /** The second dropdown (for the name of the team) from the 'add-score-dialog' */
+  private OCSpinner spinnerTeamB;
 
+  /**
+   * Opens a new dialog to add a new score
+   *
+   * @param view
+   */
   public void addScore(View view) {
     AlertDialog.Builder alertDialog = new AlertDialog.Builder(LandingActivity.this);
     alertDialog.setView(R.layout.alert_add_score);
@@ -68,7 +79,7 @@ public class LandingActivity extends AppCompatActivity {
     ArrayAdapter<String> spinnerTeamAdaptor =
         new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, teams);
     spinnerTeamA.setAdapter(spinnerTeamAdaptor);
-    spinnerTeamA.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
+    spinnerTeamA.setSpinnerEventsListener(new OCSpinner.OnSpinnerEventsListener() {
       @Override
       public void onSpinnerClosed(Spinner spinner) {
 
@@ -82,11 +93,10 @@ public class LandingActivity extends AppCompatActivity {
           set.remove(selectedItem);
         }
         String[] teams = set.toArray(new String[set.size()]);
-        spinner
-            .setAdapter(new ArrayAdapter<>(LandingActivity.this, android.R.layout.simple_spinner_dropdown_item, teams));
+        spinner.setAdapter(new ArrayAdapter<>(LandingActivity.this, android.R.layout.simple_spinner_dropdown_item, teams));
       }
     });
-    spinnerTeamB.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
+    spinnerTeamB.setSpinnerEventsListener(new OCSpinner.OnSpinnerEventsListener() {
       @Override
       public void onSpinnerClosed(Spinner spinner) {
       }
@@ -99,12 +109,16 @@ public class LandingActivity extends AppCompatActivity {
           set.remove(selectedItem);
         }
         String[] teams = set.toArray(new String[set.size()]);
-        spinner
-            .setAdapter(new ArrayAdapter<>(LandingActivity.this, android.R.layout.simple_spinner_dropdown_item, teams));
+        spinner.setAdapter(new ArrayAdapter<>(LandingActivity.this, android.R.layout.simple_spinner_dropdown_item, teams));
       }
     });
   }
 
+  /**
+   * Opens a dialog to add a new team
+   *
+   * @param view The clicked view
+   */
   public void addTeam(View view) {
     AlertDialog.Builder alertDialog = new AlertDialog.Builder(LandingActivity.this);
     final EditText input = new EditText(LandingActivity.this);
@@ -129,10 +143,20 @@ public class LandingActivity extends AppCompatActivity {
     alertDialog.show();
   }
 
+  /**
+   * Resets the data structure
+   *
+   * @param view The clicked view
+   */
   public void resetStat(View view) {
     dataManaging.reset();
   }
 
+  /**
+   * Starts the {@link StatisticsActivity}
+   *
+   * @param view The clicked view
+   */
   public void showStat(View view) {
     startActivity(new Intent(LandingActivity.this, StatisticsActivity.class));
   }

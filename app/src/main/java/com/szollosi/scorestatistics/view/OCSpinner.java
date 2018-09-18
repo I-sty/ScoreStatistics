@@ -4,10 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Spinner;
 
-public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
+/**
+ * Open-Close Spinner (OCSpinner)
+ */
+public class OCSpinner extends android.support.v7.widget.AppCompatSpinner {
   /**
-   * An interface which a client of this Spinner could use to receive
-   * open/closed events for this Spinner.
+   * An interface to receive open/closed events for this Spinner.
    */
   public interface OnSpinnerEventsListener {
 
@@ -23,9 +25,10 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
 
   }
 
+  /** Spinner event listener */
   private OnSpinnerEventsListener mListener;
 
-  private boolean mOpenInitiated = false;
+  private boolean opened = false;
 
   /**
    * Construct a new spinner with the given context's theme and the supplied attribute set.
@@ -34,7 +37,7 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
    * access the current theme, resources, etc.
    * @param attrs The attributes of the XML tag that is inflating the view.
    */
-  public CustomSpinner(Context context, AttributeSet attrs) {
+  public OCSpinner(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
@@ -44,11 +47,9 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
    * @param context The Context the view is running in, through which it can
    * access the current theme, resources, etc.
    */
-  public CustomSpinner(Context context) {
+  public OCSpinner(Context context) {
     super(context);
   }
-
-  // implement the Spinner constructors that you need
 
   /**
    * A boolean flag indicating that the Spinner triggered an open event.
@@ -56,7 +57,7 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
    * @return true for opened Spinner
    */
   public boolean hasBeenOpened() {
-    return mOpenInitiated;
+    return opened;
   }
 
   public void onWindowFocusChanged(boolean hasFocus) {
@@ -67,9 +68,7 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
 
   @Override
   public boolean performClick() {
-    // register that the Spinner was opened so we have a status
-    // indicator for when the container holding this Spinner may lose focus
-    mOpenInitiated = true;
+    opened = true;
     if (mListener != null) {
       mListener.onSpinnerOpened(this);
     }
@@ -80,7 +79,7 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
    * Propagate the closed Spinner event to the listener from outside if needed.
    */
   public void performClosedEvent() {
-    mOpenInitiated = false;
+    opened = false;
     if (mListener != null) {
       mListener.onSpinnerClosed(this);
     }
@@ -88,6 +87,8 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
 
   /**
    * Register the listener which will listen for events.
+   *
+   * @param onSpinnerEventsListener The event listener
    */
   public void setSpinnerEventsListener(OnSpinnerEventsListener onSpinnerEventsListener) {
     mListener = onSpinnerEventsListener;

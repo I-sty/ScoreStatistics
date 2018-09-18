@@ -5,7 +5,20 @@ import android.support.annotation.Nullable;
 
 import java.util.Set;
 
+/**
+ * Data managing interface.
+ */
 public interface DataManaging {
+  /**
+   * Gets the saved scored for a team.
+   *
+   * @param teamName The team to get saved score.
+   *
+   * @return The saved score of a team or null if the team does not exist in the Shared Preference
+   */
+  @Nullable
+  Score getScoreByTeam(@NonNull String teamName);
+
   /**
    * Gets all teams from the Shared Preference.
    *
@@ -36,7 +49,4 @@ public interface DataManaging {
    * @return true if the name is saved, false in case of any errors during the saving operation
    */
   boolean saveTeamName(@NonNull String teamName);
-
-  @Nullable
-  Score getScoreByTeam(@NonNull String teamName);
 }

@@ -1,5 +1,8 @@
 package com.szollosi.scorestatistics.data;
 
+/**
+ * Data class for the Score object. This class contains a results of a team.
+ */
 public class Score {
   private final int concededGoals;
 
@@ -11,6 +14,15 @@ public class Score {
 
   private final int wins;
 
+  /**
+   * Constructor
+   *
+   * @param playedMatches The number of played matches
+   * @param wins The number of win
+   * @param scoredGoals Scored goals
+   * @param concededGoals Conceded goals
+   * @param teamName The name of the team
+   */
   public Score(int playedMatches, int wins, int scoredGoals, int concededGoals, String teamName) {
     this.playedMatches = playedMatches;
     this.wins = wins;
